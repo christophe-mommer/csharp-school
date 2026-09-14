@@ -1,0 +1,8 @@
+@api = https://localhost:7001
+### Lire le catalogue de démonstration
+GET {{api}}/products
+### Vérifier un produit
+POST {{api}}/products/check
+Content-Type: application/json
+
+{ "name": "Stylo", "price": 2.50 }

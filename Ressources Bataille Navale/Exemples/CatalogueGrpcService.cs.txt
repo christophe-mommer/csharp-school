@@ -1,0 +1,22 @@
+using FluentValidation;
+using Grpc.Core;
+using Catalogue.Grpc;
+
+public sealed class CatalogueGrpcService(IValidator<ProductQuery> validator)
+    : global::Catalogue.Grpc.Catalogue.CatalogueBase
+{
+    public override async Task<ProductReply> FindProduct(
+        ProductQuery request, ServerCallContext context)
+    {
+        var check = await validator.ValidateAsync(request, context.CancellationToken);
+        if (!check.IsValid)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, check.ToString()));
+        if (request.Id != 1)
+            throw new RpcException(new Status(StatusCode.NotFound, "Produit inconnu"));
+        return new ProductReply { Id = 1, Name = "Stylo" };
+    }
+}
+public sealed class ProductQueryValidator : AbstractValidator<ProductQuery>
+{
+    public ProductQueryValidator() => RuleFor(p => p.Id).GreaterThan(0);
+}

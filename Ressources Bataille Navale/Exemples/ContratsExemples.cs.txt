@@ -1,0 +1,22 @@
+// Exemples génériques du référentiel ; à placer dans les contextes indiqués.
+public record ProductDto(int Id, string Name, decimal Price);
+public record ProductInput(string Name, decimal Price);
+
+// C# essentiel, diapos 24 à 26.
+public class Product
+{
+    public required string Name { get; init; }
+    public decimal Price { get; set; }
+    public bool IsFree => Price == 0;
+}
+
+// Règle du test générique, diapo 39 : prix et taux non négatifs.
+public static class PriceMath
+{
+    public static decimal WithTax(decimal net, decimal rate)
+    {
+        if (net < 0) throw new ArgumentOutOfRangeException(nameof(net));
+        if (rate < 0) throw new ArgumentOutOfRangeException(nameof(rate));
+        return net * (1 + rate);
+    }
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+option csharp_namespace = "Catalogue.Grpc";
+package catalogue;
+
+service Catalogue {
+  rpc FindProduct (ProductQuery) returns (ProductReply);
+}
+
+message ProductQuery {
+  int32 id = 1;
+}
+
+message ProductReply {
+  int32 id = 1;
+  string name = 2;
+}
